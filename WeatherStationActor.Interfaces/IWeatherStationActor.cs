@@ -17,16 +17,12 @@ namespace WeatherStationActor.Interfaces
     public interface IWeatherStationActor : IActor
     {
         /// <summary>
-        /// TODO: Replace with your own actor method.
+        /// Get weather report
         /// </summary>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<int> GetCountAsync(CancellationToken cancellationToken);
+        Task<IList<WeatherReport>> GetLocationWeatherTotal(CancellationToken cancellationToken);
 
-        /// <summary>
-        /// TODO: Replace with your own actor method.
-        /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        Task SetCountAsync(int count, CancellationToken cancellationToken);
+        Task<IList<WeatherReport>> AddWeatherReport(WeatherReport report, CancellationToken cancellationToken);
     }
 }

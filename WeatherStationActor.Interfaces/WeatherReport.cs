@@ -4,13 +4,11 @@ namespace WeatherStationActor.Interfaces
 {
     public class WeatherReport
     {
-        public WeatherReport(DateTime time, int degrees)
+        public WeatherReport()
         {
-            Time = time;
-            Degrees = degrees;
         }
 
-        public DateTime Time { get; }
-        public int Degrees { get; }
+        public DateTime Time { get; set; }
+        public int Degrees { get; set; }
     }
 }
