@@ -2,6 +2,9 @@
 <StartupServicesManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
     <Parameter Name="WeatherApi_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="WeatherStationActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="WeatherStationActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="WeatherStationActorService_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <Services>
     <!-- The section below creates instances of service types, when an instance of this 
@@ -13,6 +16,11 @@
       <StatelessService ServiceTypeName="WeatherApiType" InstanceCount="[WeatherApi_InstanceCount]">
         <SingletonPartition />
       </StatelessService>
+    </Service>
+    <Service Name="WeatherStationActorService" GeneratedIdRef="c798edb8-d053-441c-99a8-1655afef6ddb|Persisted">
+      <StatefulService ServiceTypeName="WeatherStationActorServiceType" TargetReplicaSetSize="[WeatherStationActorService_TargetReplicaSetSize]" MinReplicaSetSize="[WeatherStationActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[WeatherStationActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
     </Service>
   </Services>
 </StartupServicesManifest>

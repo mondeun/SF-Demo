@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using WeatherStationActor.Interfaces;
 
 namespace WeatherApi.Controllers
 {
@@ -29,7 +30,7 @@ namespace WeatherApi.Controllers
         public async Task<IEnumerable<WeatherReport>> Get(string location)
         {
             //var weatherStationActor =
-            //    ActorProxy.Create<IWeatherStationActor>(new ActorId(location), new Uri("fabric:/SF-Demo/WeatherStationActorService"));
+            //    ActorProxy.Create<IWeatherStationActor>(new ActorId(location), new Uri("fabric:/SF_Demo/WeatherStationActorService"));
 
             //var results = await weatherStationActor.GetLocationWeatherTotal(null, CancellationToken.None);
 

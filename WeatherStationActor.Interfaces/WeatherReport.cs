@@ -1,6 +1,6 @@
 using System;
 
-namespace WeatherApi
+namespace WeatherStationActor.Interfaces
 {
     public class WeatherReport
     {
