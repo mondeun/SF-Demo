@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Actors;
@@ -12,7 +11,7 @@ using WeatherStationActor.Interfaces;
 namespace WeatherApi.Controllers
 {
     [ApiController]
-    [Route("[controller]/{location}")]
+    [Route("api/[controller]/{location}")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly ILogger<WeatherForecastController> _logger;
@@ -25,6 +24,7 @@ namespace WeatherApi.Controllers
         [HttpGet]
         public async Task<IList<WeatherReport>> Get(string location)
         {
+            _logger.LogInformation($"Fetching actor {location}'s state");
             var weatherStationActor =
                 ActorProxy.Create<IWeatherStationActor>(new ActorId(location), new Uri("fabric:/SF_Demo/WeatherStationActorService"));
 
@@ -34,6 +34,7 @@ namespace WeatherApi.Controllers
         [HttpPost]
         public async Task<IList<WeatherReport>> PostWeather(string location, [FromBody] WeatherReport report)
         {
+            _logger.LogInformation($"Updating actor {location}'s state", report);
             var weatherStationActor =
                 ActorProxy.Create<IWeatherStationActor>(new ActorId(location), new Uri("fabric:/SF_Demo/WeatherStationActorService"));
             

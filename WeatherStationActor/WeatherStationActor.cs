@@ -21,6 +21,8 @@ namespace WeatherStationActor
     [StatePersistence(StatePersistence.Persisted)]
     internal class WeatherStationActor : Actor, IWeatherStationActor
     {
+        //private IActorTimer _takeTemperatureTimer;
+
         /// <summary>
         /// Initializes a new instance of WeatherStationActor
         /// </summary>
@@ -35,12 +37,24 @@ namespace WeatherStationActor
         /// This method is called whenever an actor is activated.
         /// An actor is activated the first time any of its methods are invoked.
         /// </summary>
-        protected override Task OnActivateAsync()
+        protected override async Task OnActivateAsync()
         {
             ActorEventSource.Current.ActorMessage(this, "Actor activated.");
-            
-            return StateManager.TryAddStateAsync("weather", new List<WeatherReport>());
+
+            await StateManager.TryAddStateAsync("weather", new List<WeatherReport>());
+
+            //_takeTemperatureTimer = RegisterTimer(TakeTemp, null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(30));
         }
+
+        //protected override Task OnDeactivateAsync()
+        //{
+        //    if (_takeTemperatureTimer != null)
+        //    {
+        //        UnregisterTimer(_takeTemperatureTimer);
+        //    }
+
+        //    return base.OnDeactivateAsync();
+        //}
 
         public async Task<IList<WeatherReport>> GetLocationWeatherTotal(CancellationToken cancellationToken)
         {
@@ -56,6 +70,23 @@ namespace WeatherStationActor
                     return list;
                 },
                 cancellationToken);
+        }
+
+        private async Task TakeTemp(object arg)
+        {
+            var rand = new Random();
+            var report = new WeatherReport
+            {
+                Degrees = rand.Next(0, 35),
+                Time = DateTime.Now
+            };
+
+            await StateManager.AddOrUpdateStateAsync("weather",
+                new List<WeatherReport> { report }, (s, list) =>
+                {
+                    list.Add(report);
+                    return list;
+                });
         }
     }
 }
